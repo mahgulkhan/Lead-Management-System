@@ -184,7 +184,7 @@ body {
 
 /* Contact Page */
 .contact-page {
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -194,7 +194,8 @@ body {
 
 .contact-container {
     width: 100%;
-    max-width: 500px;
+    max-width: 550px;
+    padding: 20px;
 }
 
 .contact-box {
@@ -212,27 +213,6 @@ body {
     font-size: 28px;
 }
 
-.contact-box input,
-.contact-box textarea {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 14px;
-    font-family: Arial, sans-serif;
-}
-
-.contact-box input:focus,
-.contact-box textarea:focus {
-    outline: none;
-    border-color: #E07856;
-}
-
-.contact-box textarea {
-    resize: vertical;
-}
-
 .contact-box form {
     display: flex;
     flex-direction: column;
@@ -240,29 +220,19 @@ body {
 
 .contact-box button {
     align-self: center;
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
-.back-link {
-    display: block;
-    text-align: center;
-    margin-top: 20px;
-    color: #E07856;
-    text-decoration: none;
-}
-
-.back-link:hover {
-    text-decoration: underline;
-}
+/* Form Group Styles */
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     text-align: left;
 }
 
 .form-group label {
     display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
+    font-weight: 600;
+    margin-bottom: 6px;
     color: #333;
     font-size: 14px;
 }
@@ -271,19 +241,48 @@ body {
 .form-group select,
 .form-group textarea {
     width: 100%;
-    padding: 12px;
+    padding: 12px 15px;
     border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 16px;
+    border-radius: 5px;
+    font-size: 15px;
     box-sizing: border-box;
+    background: #fafafa;
+    transition: border-color 0.3s, background 0.3s;
+    font-family: Arial, sans-serif;
 }
 
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
     outline: none;
-    border-color: #FF8C00;
+    border-color: #E07856;
+    background: #fff;
 }
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.contact-box .btn-orange {
+    width: 100%;
+    padding: 14px;
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+.contact-box .back-link {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    color: #E07856;
+    text-decoration: none;
+}
+
+.contact-box .back-link:hover {
+    text-decoration: underline;
+}
+
 /* Admin Page */
 .admin-page {
     background-color: #f5f5f5;
@@ -485,7 +484,7 @@ body {
     position: absolute;
     right: 12px;
     top: 50%;
-    transform: translateY(-220%);
+    transform: translateY(-50%);
     background: none;
     border: none;
     color: #E07856;
