@@ -1,1 +1,1 @@
-# Lead-Management-System
+Lead Management System for CRM implementations
