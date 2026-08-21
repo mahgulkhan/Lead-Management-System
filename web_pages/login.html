@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Login - Maison Consulting</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="login-page">
+    <div class="login-container">
+        <div class="login-box">
+            <h2>Admin Login</h2>
+            
+            <form id="loginForm">
+                <input type="text" id="username" placeholder="Username" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <button type="submit" class="btn btn-orange">Login</button>
+            </form>
+            
+            <a href="/" class="back-link">Back to Home</a>
+            <p id="errorMsg" style="color: red; text-align: center; margin-top: 10px;"></p>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='javascript/authentications.js') }}"></script>
+    <script src="{{ url_for('static', filename='javascript/app.js') }}"></script>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorMsg = document.getElementById('errorMsg');
+            
+            // Validate login form
+            const validation = AuthHelper.validateLoginForm(username, password);
+            
+            if (!validation.valid) {
+                errorMsg.textContent = validation.message;
+                return;
+            }
+            
+            // Call backend to verify admin
+            fetch('/api/admin-login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({username, password})
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    AuthHelper.setToken(data.token);
+                    AuthHelper.setUser({id: data.admin_id, username: username});
+                    window.location.href = '/admin-dashboard';
+                } else {
+                    errorMsg.textContent = 'Invalid username or password';
+                }
+            })
+            .catch(error => {
+                errorMsg.textContent = 'Login error. Try again.';
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Contact Us - Maison Consulting</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="contact-page">
+    <div class="contact-container">
+        <div class="contact-box">
+            <h2 style="text-align: center; margin-bottom: 25px;">Contact Us</h2>
+            
+            <form id="contactForm">
+                <div class="form-group">
+                    <label for="company_name">Company Name</label>
+                    <input type="text" id="company_name" placeholder="Enter your company name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="contact_name">Your Name</label>
+                    <input type="text" id="contact_name" placeholder="Enter your full name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" placeholder="example@domain.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" placeholder="1234-5678910" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="source">How did you hear about us?</label>
+                    <select id="source" required>
+                        <option value="">Select an option</option>
+                        <option value="Website">Website</option>
+                        <option value="Referral">Referral</option>
+                        <option value="Cold Call">Cold Call</option>
+                        <option value="Event">Event</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Your Message</label>
+                    <textarea id="message" placeholder="Write your message here..." rows="5" required></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-orange">Submit</button>
+            </form>
+            
+            <p id="errorMsg" style="color: red; text-align: center; margin-top: 15px;"></p>
+            <a href="/" class="back-link" style="display: block; text-align: center; margin-top: 15px;">Back to Home</a>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='javascript/app.js') }}"></script>
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const companyName = document.getElementById('company_name').value;
+            const contactName = document.getElementById('contact_name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const source = document.getElementById('source').value;
+            const message = document.getElementById('message').value;
+            const errorMsg = document.getElementById('errorMsg');
+            
+            errorMsg.textContent = '';
+            
+            const validation = validateContactForm(companyName, contactName, email, phone, message);
+            
+            if (!validation.valid) {
+                errorMsg.textContent = validation.message;
+                return;
+            }
+            
+            if (!source) {
+                errorMsg.textContent = 'Please select how you heard about us';
+                return;
+            }
+            
+            const data = {
+                company_name: companyName,
+                contact_name: contactName,
+                email: email,
+                phone: phone,
+                source: source,
+                message: message
+            };
+            
+            fetch('/api/submit-lead', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    alert('Thank you! Your message has been sent.');
+                    document.getElementById('contactForm').reset();
+                    errorMsg.textContent = '';
+                    window.location.href = '/';
+                } else {
+                    errorMsg.textContent = 'Error submitting form. Please try again.';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                errorMsg.textContent = 'Error submitting form. Please try again.';
+            });
+        });
+    </script>
+</body>
+</html>
